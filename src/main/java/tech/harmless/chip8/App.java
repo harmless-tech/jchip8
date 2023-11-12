@@ -4,17 +4,14 @@ import com.google.gson.Gson;
 
 /** Hello world! */
 public class App {
+
+    private byte[] memory = new byte[4096];
+
     public static void main(String[] args) {
         System.out.println("Hello World!");
 
-        Class<Gson> c = Gson.class;
-        var a = c;
+        var a = Gson.class;
         System.out.println(a);
-
-        if (true) {
-            System.out.println(a);
-        } else {
-            System.out.println(a);
-        }
+        System.out.println(a);
     }
 }

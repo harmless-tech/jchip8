@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter
+        xmlns="https://github.com/spotbugs/filter/3.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/4.8.1/spotbugs/etc/findbugsfilter.xsd">
+<!--    <Match>-->
+<!--        <Class name="tech.harmless.chip8.App"/>-->
+<!--        <Field name="memory"/>-->
+<!--        <Bug pattern="FCBL_FIELD_COULD_BE_LOCAL,URF_UNREAD_FIELD"/>-->
+<!--    </Match>-->
+</FindBugsFilter>

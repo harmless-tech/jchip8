@@ -142,8 +142,8 @@
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
             <configuration>
-              <!-- <includeFilterFile>spotbugs-security-include.xml</includeFilterFile>
-              <excludeFilterFile>spotbugs-security-exclude.xml</excludeFilterFile> -->
+              <!--<includeFilterFile>spotbugs-security-include.xml</includeFilterFile>-->
+              <excludeFilterFile>config/spotbugs-exclude.xml</excludeFilterFile>
               <includeTests>true</includeTests>
               <plugins>
                 <plugin>
@@ -167,10 +167,18 @@
             </dependencies>
             <executions>
               <execution>
+                <id>check-verify</id>
                 <goals>
                   <goal>check</goal>
                 </goals>
-                <phase>compile</phase>
+                <phase>verify</phase>
+              </execution>
+              <execution>
+                <id>check-package</id>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <phase>package</phase>
               </execution>
             </executions>
           </plugin>
@@ -211,10 +219,18 @@
             </configuration>
             <executions>
               <execution>
+                <id>check-verify</id>
                 <goals>
                   <goal>check</goal>
                 </goals>
-                <phase>compile</phase>
+                <phase>verify</phase>
+              </execution>
+              <execution>
+                <id>check-package</id>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <phase>package</phase>
               </execution>
             </executions>
           </plugin>
