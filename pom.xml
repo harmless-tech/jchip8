@@ -7,6 +7,7 @@
   <groupId>tech.harmless.chip8</groupId>
   <artifactId>jchip8</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <description>A simple chip8 emulator in java</description>
 
   <name>jchip8</name>
   <!-- FIXME change it to the project's website -->
@@ -14,60 +15,225 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
   </properties>
 
   <dependencies>
+    <!-- Annotations -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>24.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Misc -->
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.10.1</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- Testing -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.10.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
 
+  <profiles>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <!-- Spotbugs -->
+          <plugin>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>compile</phase>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs</artifactId>
+                <version>4.8.1</version>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <!-- <includeFilterFile>spotbugs-security-include.xml</includeFilterFile>
+              <excludeFilterFile>spotbugs-security-exclude.xml</excludeFilterFile> -->
+              <includeTests>true</includeTests>
+              <plugins>
+                <plugin>
+                  <groupId>com.h3xstream.findsecbugs</groupId>
+                  <artifactId>findsecbugs-plugin</artifactId>
+                  <version>1.12.0</version>
+                </plugin>
+                <plugin>
+                  <groupId>com.mebigfatguy.sb-contrib</groupId>
+                  <artifactId>sb-contrib</artifactId>
+                  <version>7.6.0</version>
+                </plugin>
+              </plugins>
+            </configuration>
+          </plugin>
+
+          <!-- Spotless -->
+          <plugin>
+            <groupId>com.diffplug.spotless</groupId>
+            <artifactId>spotless-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>compile</phase>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <formats>
+                <format>
+                  <includes>
+                    <include>*.md</include>
+                    <include>.gitignore</include>
+                  </includes>
+                  <trimTrailingWhitespace/>
+                  <endWithNewline/>
+                  <indent>
+                    <tabs>true</tabs>
+                    <spacesPerTab>4</spacesPerTab>
+                  </indent>
+                </format>
+              </formats>
+              <java>
+                <googleJavaFormat>
+                  <version>21</version>
+                  <style>AOSP</style>
+                  <reflowLongStrings>true</reflowLongStrings>
+                </googleJavaFormat>
+                <formatAnnotations />
+              </java>
+              <pom>
+                <includes>
+                  <include>pom.xml</include>
+                </includes>
+                <sortPom />
+              </pom>
+            </configuration>
+          </plugin>
+
+          <!-- Maven -->
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-dependencies</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>copy-dependencies</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.build.directory}/libs</outputDirectory>
+                  <includeScope>compile</includeScope>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.3.0</version>
+            <configuration>
+              <archive>
+                <manifest>
+                  <addClasspath>true</addClasspath>
+                  <classpathPrefix>libs/</classpathPrefix>
+                  <mainClass>tech.harmless.chip8.App</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
   <build>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
+        <!-- Spotbugs -->
+        <plugin>
+          <groupId>com.github.spotbugs</groupId>
+          <artifactId>spotbugs-maven-plugin</artifactId>
+          <version>4.8.1.0</version>
+        </plugin>
+
+        <!-- Spotless -->
+        <plugin>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <version>2.40.0</version>
+        </plugin>
+
+        <!-- Maven -->
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>3.3.2</version>
         </plugin>
         <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>3.0.2</version>
+          <version>3.3.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.0</version>
+          <version>3.11.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.1</version>
+          <version>3.2.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>3.6.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.0.2</version>
+          <version>3.3.0</version>
         </plugin>
-        <plugin>
+        <!-- <plugin>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.6.0</version>
+        </plugin> -->
+        <!-- <plugin>
           <artifactId>maven-install-plugin</artifactId>
-          <version>2.5.2</version>
-        </plugin>
-        <plugin>
+          <version>3.1.1</version>
+        </plugin> -->
+        <!-- <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.8.2</version>
-        </plugin>
+          <version>3.1.1</version>
+        </plugin> -->
         <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
-        <plugin>
+        <!-- <plugin>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.7.1</version>
-        </plugin>
+          <version>3.12.1</version>
+        </plugin> -->
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.0.0</version>
+          <version>3.4.5</version>
         </plugin>
       </plugins>
     </pluginManagement>
