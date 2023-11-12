@@ -141,6 +141,7 @@
           <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
+            <version>4.8.1.0</version>
             <configuration>
               <!--<includeFilterFile>spotbugs-security-include.xml</includeFilterFile>-->
               <excludeFilterFile>config/spotbugs-exclude.xml</excludeFilterFile>
@@ -187,6 +188,7 @@
           <plugin>
             <groupId>com.diffplug.spotless</groupId>
             <artifactId>spotless-maven-plugin</artifactId>
+            <version>2.40.0</version>
             <configuration>
               <formats>
                 <format>
@@ -239,6 +241,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
+            <version>3.1.0</version>
             <configuration>
               <mainClass>tech.harmless.chip8.App</mainClass>
             </configuration>
@@ -254,6 +257,7 @@
           <!-- Maven -->
           <plugin>
             <artifactId>maven-dependency-plugin</artifactId>
+            <version>3.6.1</version>
             <executions>
               <execution>
                 <id>copy-dependencies</id>
@@ -298,6 +302,7 @@
           <plugin>
             <groupId>org.graalvm.buildtools</groupId>
             <artifactId>native-maven-plugin</artifactId>
+            <version>0.9.28</version>
             <extensions>true</extensions>
             <configuration>
               <imageName>${project.artifactId}</imageName>
