@@ -28,7 +28,7 @@ jobs:
     - name: Build with Maven
       run: mvn -B clean verify package --file pom.xml
     - uses: actions/upload-artifact@v3
-      if: ${{ contains(matrix.os, "ubuntu") }}
+      if: ${{ contains(matrix.os, 'ubuntu') }}
       with:
         name: jars
         path: |
