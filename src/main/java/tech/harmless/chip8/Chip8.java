@@ -2,23 +2,25 @@ package tech.harmless.chip8;
 
 import java.util.Stack;
 
+// TODO: Make stuff final.
 public class Chip8 {
     public static final int MEMORY_SIZE = 4096;
 
-    private byte[] memory = new byte[MEMORY_SIZE]; // 4kb
-    private byte[] display = new byte[256]; // 64x32 (black or white)
+    private final byte[] memory = new byte[MEMORY_SIZE]; // 4kb
+    private Display display = new Display();
     private int programCounter = 0;
     private short regI = 0;
-    private Stack<Short> stack = new Stack<>();
-    private byte timer = Byte.MAX_VALUE;
-    private byte soundTimer = 0;
+    private Stack<Short> stack = new Stack<>(); // TODO: Limit stack?
+    private byte timer = Byte.MAX_VALUE; // TODO: Needs to be shifted since java uses signed bytes.
+    private byte soundTimer = 0; // TODO: Needs to be shifted since java uses signed bytes.
     private Registers registers = new Registers();
 
-    public Chip8() {}
+    public Chip8() {
+        final var window = new Window(64, 32, true);
+    }
 
-    class Font {
+    class ChipFont {
         private final int startAddress = 0x050;
-        private final int endAddress = 0x09F;
 
         private final byte[][] fontChars = {
             {(byte) 0xF0, (byte) 0x90, (byte) 0x90, (byte) 0x90, (byte) 0xF0}, // 0
@@ -39,10 +41,11 @@ public class Chip8 {
             {(byte) 0xF0, (byte) 0x80, (byte) 0xF0, (byte) 0x80, (byte) 0x80}, // F
         };
 
-        protected boolean loadFont(byte[] memory) {
-            if (memory.length < MEMORY_SIZE) return false;
-
-            return true;
+        protected void loadFont(byte[] memory) {
+            for (int x = 0; x < fontChars.length; x++) {
+                var fc = fontChars[x];
+                System.arraycopy(fc, 0, memory, startAddress + (x * fc.length), fc.length);
+            }
         }
     }
 }
