@@ -8,13 +8,13 @@
 
   <name>jchip8</name>
   <description>A simple chip8 emulator in java</description>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>https://github.com/harmless-tech/jchip8</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
+    <manifold.version>2023.1.30</manifold.version>
   </properties>
 
   <dependencies>
@@ -39,6 +39,18 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <version>5.10.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>systems.manifold</groupId>
+      <artifactId>manifold-ext</artifactId>
+      <version>${manifold.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>systems.manifold</groupId>
+      <artifactId>manifold-ext-rt</artifactId>
+      <version>${manifold.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -283,6 +295,14 @@
                   <mainClass>tech.harmless.chip8.App</mainClass>
                 </manifest>
               </archive>
+            </configuration>
+          </plugin>
+          <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.11.0</version>
+            <configuration>
+              <fork>true</fork>
+              <testCompilerArgument>-Xplugin:Manifold</testCompilerArgument>
             </configuration>
           </plugin>
         </plugins>
