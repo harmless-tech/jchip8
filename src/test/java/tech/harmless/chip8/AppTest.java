@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class AppTest {
     @Test
     public void initChip8() {
-        @Jailbreak Chip8 chip = new Chip8();
+        @Jailbreak Chip8 chip = new Chip8(); // TODO: Chip8 opens window.
         @Jailbreak Chip8.ChipFont chipFont = chip.new ChipFont();
         chipFont.loadFont(chip.memory);
 

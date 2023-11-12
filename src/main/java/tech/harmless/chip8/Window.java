@@ -114,7 +114,7 @@ public class Window extends JPanel implements Runnable {
         if (fpsCounter != null) fpsCounter.start();
 
         // Loop
-        final long delta = 16000000;
+        final int delta = 16666666;
         long lastTime = 0;
 
         while (true) { // TODO: This needs to be slowed down?
@@ -124,6 +124,7 @@ public class Window extends JPanel implements Runnable {
                 } catch (InterruptedException ignored) {
                 }
             }
+            lastTime = System.nanoTime();
 
             repaint();
         }
