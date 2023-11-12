@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>tech.harmless.chip8</groupId>
   <artifactId>jchip8</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <description>A simple chip8 emulator in java</description>
+  <version>1.0.0-SNAPSHOT</version>
 
   <name>jchip8</name>
+  <description>A simple chip8 emulator in java</description>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
@@ -45,133 +43,8 @@
     </dependency>
   </dependencies>
 
-  <profiles>
-    <profile>
-      <id>default</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <!-- Spotbugs -->
-          <plugin>
-            <groupId>com.github.spotbugs</groupId>
-            <artifactId>spotbugs-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>compile</phase>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-              </execution>
-            </executions>
-            <dependencies>
-              <dependency>
-                <groupId>com.github.spotbugs</groupId>
-                <artifactId>spotbugs</artifactId>
-                <version>4.8.1</version>
-              </dependency>
-            </dependencies>
-            <configuration>
-              <!-- <includeFilterFile>spotbugs-security-include.xml</includeFilterFile>
-              <excludeFilterFile>spotbugs-security-exclude.xml</excludeFilterFile> -->
-              <includeTests>true</includeTests>
-              <plugins>
-                <plugin>
-                  <groupId>com.h3xstream.findsecbugs</groupId>
-                  <artifactId>findsecbugs-plugin</artifactId>
-                  <version>1.12.0</version>
-                </plugin>
-                <plugin>
-                  <groupId>com.mebigfatguy.sb-contrib</groupId>
-                  <artifactId>sb-contrib</artifactId>
-                  <version>7.6.0</version>
-                </plugin>
-              </plugins>
-            </configuration>
-          </plugin>
-
-          <!-- Spotless -->
-          <plugin>
-            <groupId>com.diffplug.spotless</groupId>
-            <artifactId>spotless-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>compile</phase>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <formats>
-                <format>
-                  <includes>
-                    <include>*.md</include>
-                    <include>.gitignore</include>
-                  </includes>
-                  <trimTrailingWhitespace/>
-                  <endWithNewline/>
-                  <indent>
-                    <tabs>true</tabs>
-                    <spacesPerTab>4</spacesPerTab>
-                  </indent>
-                </format>
-              </formats>
-              <java>
-                <googleJavaFormat>
-                  <version>21</version>
-                  <style>AOSP</style>
-                  <reflowLongStrings>true</reflowLongStrings>
-                </googleJavaFormat>
-                <formatAnnotations />
-              </java>
-              <pom>
-                <includes>
-                  <include>pom.xml</include>
-                </includes>
-                <sortPom />
-              </pom>
-            </configuration>
-          </plugin>
-
-          <!-- Maven -->
-          <plugin>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>copy-dependencies</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>copy-dependencies</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${project.build.directory}/libs</outputDirectory>
-                  <includeScope>compile</includeScope>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <artifactId>maven-jar-plugin</artifactId>
-            <version>3.3.0</version>
-            <configuration>
-              <archive>
-                <manifest>
-                  <addClasspath>true</addClasspath>
-                  <classpathPrefix>libs/</classpathPrefix>
-                  <mainClass>tech.harmless.chip8.App</mainClass>
-                </manifest>
-              </archive>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
   <build>
-    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+    <pluginManagement>
       <plugins>
         <!-- Spotbugs -->
         <plugin>
@@ -185,6 +58,20 @@
           <groupId>com.diffplug.spotless</groupId>
           <artifactId>spotless-maven-plugin</artifactId>
           <version>2.40.0</version>
+        </plugin>
+
+        <!-- GraalVM -->
+        <plugin>
+          <groupId>org.graalvm.buildtools</groupId>
+          <artifactId>native-maven-plugin</artifactId>
+          <version>0.9.28</version>
+        </plugin>
+
+        <!-- Exec -->
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>3.1.0</version>
         </plugin>
 
         <!-- Maven -->
@@ -238,4 +125,193 @@
       </plugins>
     </pluginManagement>
   </build>
+
+  <profiles>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+        <property>
+          <name>native</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <!-- Spotbugs -->
+          <plugin>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
+            <configuration>
+              <!-- <includeFilterFile>spotbugs-security-include.xml</includeFilterFile>
+              <excludeFilterFile>spotbugs-security-exclude.xml</excludeFilterFile> -->
+              <includeTests>true</includeTests>
+              <plugins>
+                <plugin>
+                  <groupId>com.h3xstream.findsecbugs</groupId>
+                  <artifactId>findsecbugs-plugin</artifactId>
+                  <version>1.12.0</version>
+                </plugin>
+                <plugin>
+                  <groupId>com.mebigfatguy.sb-contrib</groupId>
+                  <artifactId>sb-contrib</artifactId>
+                  <version>7.6.0</version>
+                </plugin>
+              </plugins>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs</artifactId>
+                <version>4.8.1</version>
+              </dependency>
+            </dependencies>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <phase>compile</phase>
+              </execution>
+            </executions>
+          </plugin>
+
+          <!-- Spotless -->
+          <plugin>
+            <groupId>com.diffplug.spotless</groupId>
+            <artifactId>spotless-maven-plugin</artifactId>
+            <configuration>
+              <formats>
+                <format>
+                  <includes>
+                    <include>*.md</include>
+                    <include>.gitignore</include>
+                  </includes>
+                  <trimTrailingWhitespace></trimTrailingWhitespace>
+                  <endWithNewline></endWithNewline>
+                  <indent>
+                    <tabs>true</tabs>
+                    <spacesPerTab>4</spacesPerTab>
+                  </indent>
+                </format>
+              </formats>
+              <java>
+                <googleJavaFormat>
+                  <version>1.18.1</version>
+                  <style>AOSP</style>
+                  <reflowLongStrings>true</reflowLongStrings>
+                </googleJavaFormat>
+                <formatAnnotations></formatAnnotations>
+              </java>
+              <pom>
+                <includes>
+                  <include>pom.xml</include>
+                </includes>
+                <sortPom></sortPom>
+              </pom>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <phase>compile</phase>
+              </execution>
+            </executions>
+          </plugin>
+
+          <!-- Exec -->
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <configuration>
+              <mainClass>tech.harmless.chip8.App</mainClass>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <!-- Maven -->
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-dependencies</id>
+                <goals>
+                  <goal>copy-dependencies</goal>
+                </goals>
+                <phase>package</phase>
+                <configuration>
+                  <outputDirectory>${project.build.directory}/libs</outputDirectory>
+                  <includeScope>compile</includeScope>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.3.0</version>
+            <configuration>
+              <archive>
+                <manifest>
+                  <addClasspath>true</addClasspath>
+                  <classpathPrefix>libs/</classpathPrefix>
+                  <mainClass>tech.harmless.chip8.App</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- GraalVM Profile -->
+    <profile>
+      <id>native</id>
+      <activation>
+        <property>
+          <name>native</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.graalvm.buildtools</groupId>
+            <artifactId>native-maven-plugin</artifactId>
+            <extensions>true</extensions>
+            <configuration>
+              <imageName>${project.artifactId}</imageName>
+              <mainClass>tech.harmless.chip8.App</mainClass>
+              <buildArgs>
+                <buildArg>-O3</buildArg>
+                <buildArg>--no-fallback</buildArg>
+                <buildArg>--strict-image-heap</buildArg>
+                <buildArg>--enable-sbom</buildArg>
+              </buildArgs>
+            </configuration>
+            <executions>
+              <execution>
+                <id>build-native</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+              <execution>
+                <id>test-native</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+                <phase>test</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
