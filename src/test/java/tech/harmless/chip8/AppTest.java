@@ -41,4 +41,40 @@ public class AppTest {
         assertEquals(timer.val, Byte.MAX_VALUE);
         assertEquals(timer.get(), 255);
     }
+
+    // TODO: Test by importing all instructions from a rom later.
+    @Test
+    public void testInstruction() {
+        Instruction max = new Instruction(65535);
+        assertEquals(max.instruction, 0b0_1111);
+        assertEquals(max.snX, 0b0_1111);
+        assertEquals(max.tnY, 0b0_1111);
+        assertEquals(max.fnN, 0b0_1111);
+        assertEquals(max.tfnNN, 0b0_1111_1111);
+        assertEquals(max.stfnNNN, 0b0_1111_1111_1111);
+
+        Instruction in = new Instruction(0b0_1111_0000_0000_0000);
+        assertEquals(in.instruction, 0b0_1111);
+        assertEquals(in.snX, 0b0_0000);
+        assertEquals(in.tnY, 0b0_0000);
+        assertEquals(in.fnN, 0b0_0000);
+        assertEquals(in.tfnNN, 0b0_0000_0000);
+        assertEquals(in.stfnNNN, 0b0_0000_0000_0000);
+
+        in = new Instruction(0b0_0000_0000_1111_1111);
+        assertEquals(in.instruction, 0b0_0000);
+        assertEquals(in.snX, 0b0_0000);
+        assertEquals(in.tnY, 0b0_1111);
+        assertEquals(in.fnN, 0b0_1111);
+        assertEquals(in.tfnNN, 0b0_1111_1111);
+        assertEquals(in.stfnNNN, 0b0_0000_1111_1111);
+
+        in = new Instruction(0b0_0000_1111_0000_1111);
+        assertEquals(in.instruction, 0b0_0000);
+        assertEquals(in.snX, 0b0_1111);
+        assertEquals(in.tnY, 0b0_0000);
+        assertEquals(in.fnN, 0b0_1111);
+        assertEquals(in.tfnNN, 0b0_0000_1111);
+        assertEquals(in.stfnNNN, 0b0_1111_0000_1111);
+    }
 }
