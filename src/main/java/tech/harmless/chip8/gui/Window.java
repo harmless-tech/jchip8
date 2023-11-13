@@ -1,10 +1,12 @@
-package tech.harmless.chip8;
+package tech.harmless.chip8.gui;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import tech.harmless.chip8.FPSCounter;
+import tech.harmless.chip8.util.Calculate;
 import tech.harmless.chip8.util.Tuple;
 
 public class Window extends JPanel implements Runnable {
@@ -114,7 +116,7 @@ public class Window extends JPanel implements Runnable {
         if (fpsCounter != null) fpsCounter.start();
 
         // Loop
-        final int delta = 16666666;
+        final long delta = Calculate.ipsTiming(60); // 60 fps
         long lastTime = 0;
 
         while (true) { // TODO: This needs to be slowed down?
