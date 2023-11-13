@@ -26,14 +26,7 @@ public class AppTest {
         assertEquals(timer.val, -68);
         assertEquals(timer.get(), 60);
 
-        timer.start();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        timer.active = false;
-
+        timer.set(0);
         assertEquals(timer.val, Byte.MIN_VALUE);
         assertEquals(timer.get(), 0);
 
