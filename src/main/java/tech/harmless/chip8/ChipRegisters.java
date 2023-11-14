@@ -1,6 +1,6 @@
 package tech.harmless.chip8;
 
-public class Registers {
+public class ChipRegisters {
     public byte v0 = 0;
     public byte v1 = 0;
     public byte v2 = 0;

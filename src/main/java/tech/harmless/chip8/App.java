@@ -1,5 +1,9 @@
 package tech.harmless.chip8;
 
+import tech.harmless.chip8.gui.Window;
+
+import javax.swing.*;
+
 /** Hello world! */
 public class App {
     public static void main(String[] args) {
@@ -7,7 +11,6 @@ public class App {
 
         final Chip8 chip = new Chip8();
 
-        // TODO: Hook chip display into this!
-        // final var window = new Window(64, 32, true);
+         final var window = new Window(chip, true);
     }
 }

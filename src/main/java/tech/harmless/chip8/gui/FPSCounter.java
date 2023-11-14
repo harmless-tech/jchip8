@@ -1,4 +1,4 @@
-package tech.harmless.chip8;
+package tech.harmless.chip8.gui;
 
 public class FPSCounter extends Thread {
     public boolean active = true;

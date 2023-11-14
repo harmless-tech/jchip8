@@ -1,35 +1,42 @@
 package tech.harmless.chip8.gui;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.awt.geom.AffineTransform;
+import java.awt.image.*;
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import org.jetbrains.annotations.NotNull;
+
 import org.jetbrains.annotations.Nullable;
-import tech.harmless.chip8.FPSCounter;
+import tech.harmless.chip8.Chip8;
 import tech.harmless.chip8.util.Calculate;
 import tech.harmless.chip8.util.Tuple;
 
 public class Window extends JPanel implements Runnable {
-    @NotNull private final JFrame frame;
-    @NotNull private final Thread renderThread;
+    private final JFrame frame;
+    private final Thread renderThread;
 
     @Nullable private final FPSCounter fpsCounter;
 
-    private final int width;
-    private final int height;
+    private final Chip8 chip;
 
+//    private MemoryImageSource source;
+    private final Image source;
     private BufferedImage back;
+//    private Image scaleBack;
 
-    public Window(final int width, final int height, final boolean trackFPS) {
-        super(new BorderLayout());
+    public Window(final Chip8 chip, final boolean trackFPS) {
+//        super(new BorderLayout());
         frame = createFrame();
 
-        this.width = width;
-        this.height = height;
-        back = (BufferedImage) (createImage(width, height));
+        this.chip = chip;
+        source = createImage(chip.display.source);
+        chip.display.source.newPixels();
 
         fpsCounter = trackFPS ? new FPSCounter() : null;
         renderThread = Thread.startVirtualThread(this);
+
+//        SwingUtilities.invokeLater(this);
 
         setBackground(Color.DARK_GRAY);
         frame.setVisible(true);
@@ -51,17 +58,39 @@ public class Window extends JPanel implements Runnable {
 
     @Override
     public void paint(Graphics window) {
+//        super.paint(window);
         if (fpsCounter != null) fpsCounter.count();
 
+        final int width = chip.display.width;
+        final int height = chip.display.height;
+
         Graphics2D twoDGraph = (Graphics2D) window;
+        twoDGraph.setColor(Color.CYAN);
+        twoDGraph.fillRect(0, 0, width, height);
 
         if (back == null || back.getWidth() != width || back.getHeight() != height)
-            back = (BufferedImage) (createImage(width, height));
+            back = (BufferedImage) (createImage(chip.display.width, chip.display.height));
 
-        Graphics graphToBack = back.createGraphics();
+        final byte[] buffer = chip.display.buffer;
+        back.setData(Raster.createRaster(back.getSampleModel(), new DataBufferByte(buffer, buffer.length), new Point()));
 
-        graphToBack.setColor(Color.RED);
-        graphToBack.fillRect(0, 0, width, height);
+//
+//
+//        System.out.println(back.getColorModel());
+
+//        createImage(1, 1).
+
+//        int[] iDisplay = new int[display.length];
+//        for (int i = 0; i < display.length; i++)
+//            iDisplay[i] = display[i];
+
+//        back.getSampleModel().setPixels();
+
+// TODO
+//        Graphics graphToBack = back.createGraphics();
+
+
+//        graphToBack.drawImage(BufferedImage.create, 0, 0, this);
 
         //        graphToBack.setColor(Color.WHITE);
         //        FontMetrics fm = graphToBack.getFontMetrics();
@@ -85,8 +114,17 @@ public class Window extends JPanel implements Runnable {
         // Math.round(MainUpdateLoop.fpsCounter.fps()), 5, 30);
         //        }
 
-        var d = keepRatio();
+//        if (scaleBack == null) {
+//            scaleBack = back.getScaledInstance(500, 500, Image.SCALE_FAST);
+////            ImageIO.write((RenderedImage) scaleBack, "png", new File("./i.tmp.png"));
+//        }
+
+// TODO
+//        graphToBack.dispose();
+
+        var d = keepRatio(width, height);
         twoDGraph.drawImage(back, 0, 0, d.x(), d.y(), this);
+//        twoDGraph.drawImage(scaleBack, 0, 0, this);
 
         if (fpsCounter != null) {
             twoDGraph.setColor(Color.YELLOW);
@@ -94,12 +132,12 @@ public class Window extends JPanel implements Runnable {
             // and size?
             twoDGraph.drawString("FPS: " + Math.round(fpsCounter.fps()), 5, 15);
         }
+
+        twoDGraph.dispose();
     }
 
     // TODO: Cache and regen on window size change.
-    private Tuple<Integer, Integer> keepRatio() {
-        int wi = width;
-        int hi = height;
+    private Tuple<Integer, Integer> keepRatio(final int wi, final int hi) {
         float ri = (float) wi / hi;
 
         var d = getSize();
@@ -113,7 +151,10 @@ public class Window extends JPanel implements Runnable {
     @Override
     public void run() {
         // Init
-        if (fpsCounter != null) fpsCounter.start();
+        if (fpsCounter != null) {
+            fpsCounter.setPriority(Thread.MIN_PRIORITY);
+            fpsCounter.start();
+        }
 
         // Loop
         final long delta = Calculate.ipsTiming(60); // 60 fps
