@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Range;
 /** Automatically splits a 16-bit instruction into its parts. */
 public class ChipInstruction {
     /** The raw 16-bit instruction. */
-    public final int totalInstruction;
+    public final char totalInstruction;
 
     /**
      * First four bytes of an instruction. (0b0_1111_0000_0000_0000)
@@ -49,7 +49,7 @@ public class ChipInstruction {
      */
     public final int stfnNNN;
 
-    public ChipInstruction(@Range(from = 0, to = 65535) final int instruction) {
+    public ChipInstruction(final char instruction) {
         this.totalInstruction = instruction;
         this.instruction = instruction >>> 12;
         this.snX = (instruction & 0b0_0000_1111_0000_0000) >>> 8;

@@ -67,6 +67,7 @@ public class Window extends JPanel implements Runnable {
                         new DataBufferInt(buffer, buffer.length),
                         new Point()));
 
+        // TODO: Center
         var d = keepRatio(width, height);
         twoDGraph.drawImage(back, 0, 0, d.x(), d.y(), this);
 

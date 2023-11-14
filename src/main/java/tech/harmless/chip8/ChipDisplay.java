@@ -8,7 +8,18 @@ public class ChipDisplay {
     public final int height = 32;
     public final int[] buffer = new int[width * height];
 
+    public final int zeroColor = Color.BLACK.getRGB();
+    public final int oneColor = Color.WHITE.getRGB();
+
     public ChipDisplay() {
-        Arrays.fill(buffer, Color.BLACK.getRGB());
+        setAllZero();
+    }
+
+    public void setZero(int x, int y) {
+
+    }
+
+    public void setAllZero() {
+        Arrays.fill(buffer, zeroColor);
     }
 }
