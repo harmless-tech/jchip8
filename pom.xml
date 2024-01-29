@@ -14,7 +14,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
-    <manifold.version>2023.1.30</manifold.version>
+    <manifold.version>2024.1.1</manifold.version>
   </properties>
 
   <dependencies>
@@ -22,7 +22,7 @@
     <dependency>
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
-      <version>24.0.1</version>
+      <version>24.1.0</version>
       <scope>provided</scope>
     </dependency>
 
@@ -62,14 +62,14 @@
         <plugin>
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>4.8.1.0</version>
+          <version>4.8.3.0</version>
         </plugin>
 
         <!-- Spotless -->
         <plugin>
           <groupId>com.diffplug.spotless</groupId>
           <artifactId>spotless-maven-plugin</artifactId>
-          <version>2.40.0</version>
+          <version>2.43.0</version>
         </plugin>
 
         <!-- GraalVM -->
@@ -83,7 +83,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>exec-maven-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>3.1.1</version>
         </plugin>
 
         <!-- Maven -->
@@ -99,11 +99,11 @@
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.11.0</version>
+          <version>3.12.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.2.2</version>
+          <version>3.2.5</version>
         </plugin>
         <plugin>
           <artifactId>maven-dependency-plugin</artifactId>
@@ -132,7 +132,7 @@
         </plugin> -->
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.4.5</version>
+          <version>3.5.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -153,7 +153,7 @@
           <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>4.8.1.0</version>
+            <version>4.8.3.0</version>
             <configuration>
               <!--<includeFilterFile>spotbugs-security-include.xml</includeFilterFile>-->
               <excludeFilterFile>config/spotbugs-exclude.xml</excludeFilterFile>
@@ -167,7 +167,7 @@
                 <plugin>
                   <groupId>com.mebigfatguy.sb-contrib</groupId>
                   <artifactId>sb-contrib</artifactId>
-                  <version>7.6.0</version>
+                  <version>7.6.4</version>
                 </plugin>
               </plugins>
             </configuration>
@@ -175,7 +175,7 @@
               <dependency>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs</artifactId>
-                <version>4.8.1</version>
+                <version>4.8.3</version>
               </dependency>
             </dependencies>
             <executions>
@@ -200,7 +200,7 @@
           <plugin>
             <groupId>com.diffplug.spotless</groupId>
             <artifactId>spotless-maven-plugin</artifactId>
-            <version>2.40.0</version>
+            <version>2.43.0</version>
             <configuration>
               <formats>
                 <format>
@@ -253,7 +253,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>3.1.0</version>
+            <version>3.1.1</version>
             <configuration>
               <mainClass>tech.harmless.chip8.App</mainClass>
             </configuration>
@@ -299,7 +299,7 @@
           </plugin>
           <plugin>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.11.0</version>
+            <version>3.12.1</version>
             <configuration>
               <fork>true</fork>
               <testCompilerArgument>-Xplugin:Manifold</testCompilerArgument>
