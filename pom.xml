@@ -14,7 +14,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>22</maven.compiler.source>
     <maven.compiler.target>22</maven.compiler.target>
-    <manifold.version>2024.1.12</manifold.version>
+    <manifold.version>2024.1.18</manifold.version>
   </properties>
 
   <dependencies>
@@ -63,11 +63,11 @@
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.2.5</version>
+          <version>3.3.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.5.0</version>
+          <version>3.6.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -88,7 +88,7 @@
           <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>4.8.4.0</version>
+            <version>4.8.5.0</version>
             <configuration>
               <!--<includeFilterFile>spotbugs-security-include.xml</includeFilterFile>-->
               <excludeFilterFile>config/spotbugs-exclude.xml</excludeFilterFile>
@@ -110,7 +110,7 @@
               <dependency>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs</artifactId>
-                <version>4.8.4</version>
+                <version>4.8.5</version>
               </dependency>
             </dependencies>
             <executions>
@@ -188,7 +188,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>3.2.0</version>
+            <version>3.3.0</version>
             <configuration>
               <mainClass>tech.harmless.chip8.App</mainClass>
             </configuration>
@@ -204,7 +204,7 @@
           <!-- Maven -->
           <plugin>
             <artifactId>maven-dependency-plugin</artifactId>
-            <version>3.6.1</version>
+            <version>3.7.0</version>
             <executions>
               <execution>
                 <id>copy-dependencies</id>
@@ -257,7 +257,7 @@
           <plugin>
             <groupId>org.graalvm.buildtools</groupId>
             <artifactId>native-maven-plugin</artifactId>
-            <version>0.10.1</version>
+            <version>0.10.2</version>
             <extensions>true</extensions>
             <configuration>
               <imageName>${project.artifactId}</imageName>
